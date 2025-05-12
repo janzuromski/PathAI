@@ -1,0 +1,6 @@
+*.yaml
+*.err
+*.out
+*.log
+*.csv
+*.slurm
