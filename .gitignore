@@ -1,6 +1,10 @@
-*.yaml
-*.err
-*.out
-*.log
 *.csv
+*.err
+*.json
+*.log
+*.out
+*.pdf
 *.slurm
+*.tiff
+*.txt
+*.yaml
