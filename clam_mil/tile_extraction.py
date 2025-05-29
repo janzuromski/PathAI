@@ -3,6 +3,9 @@ import pandas as pd
 import slideflow as sf
 
 def main():
+    extraction_params = (
+        (256, mag) for mag in ('40x', '20x', '10x')
+    )
     if os.path.exists('project'):
         project = sf.load_project('project')
     else:
@@ -11,22 +14,10 @@ def main():
             annotations='../clam_train_annotations.csv',
             slides='/exports/path-cutane-lymfomen-hpc/Thom_Doeleman/CLAM_train_cropped'
         )
-    dataset = project.dataset(tile_px=256, tile_um='40x')
-    dataset.extract_tiles(mpp_override=0.25, skip_extracted=True)
-
-    # labels, _ = train_dataset.labels('category')
-
-    # train_dataset = train_dataset.balance('category')
-
-    # hp = sf.ModelParams(
-    #     tile_px=256, tile_um=128, model='xception', batch_size=32, epochs=[3]
-    # )
-
-    # trainer = sf.model.build_trainer(
-    #     hp=hp, outdir='./project/out/', labels=labels
-    # )
-
-    # results = trainer.train(train_dataset, val_dataset)
+    for tile_px, tile_um in extraction_params:
+        dataset = project.dataset(tile_px=tile_px, tile_um=tile_um)
+        dataset.extract_tiles(mpp_override=0.25, skip_extracted=True)
+    
 
 if __name__ == '__main__':
     main()
