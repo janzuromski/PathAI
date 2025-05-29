@@ -4,7 +4,9 @@
 *.log
 *.out
 *.pdf
+*.pth
 *.slurm
+*.tfrecords
 *.tiff
 *.txt
 *.yaml
