@@ -3,15 +3,16 @@ import pandas as pd
 import slideflow as sf
 
 def main():
+    project_dir = 'project'
     extraction_params = (
         (256, mag) for mag in ('40x', '20x', '10x')
     )
-    if os.path.exists('project'):
-        project = sf.load_project('project')
+    if os.path.exists(project_dir):
+        project = sf.load_project(project_dir)
     else:
         project = sf.create_project(
-            root='project',
-            annotations='../clam_train_annotations.csv',
+            root=project_dir,
+            annotations='/exports/path-cutane-lymfomen-hpc/jan/rl/clam_train_annotations.csv',
             slides='/exports/path-cutane-lymfomen-hpc/Thom_Doeleman/CLAM_train_cropped'
         )
     for tile_px, tile_um in extraction_params:
