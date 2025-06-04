@@ -1,35 +1,30 @@
 import os
 import slideflow as sf
+from slideflow.mil import mil_config, train_mil
 
 def main():
 
     project = sf.load_project('project')
-    hp = sf.ModelParams(
-        tile_px=256,
+    dataset = project.dataset(
+        tile_px=256, 
         tile_um='40x',
-        model='xception',
+        filters={'dataset': 'train', 'category': ['MF', 'BID']}
+    )
+    train, val = dataset.split(labels='category', val_fraction=0.2)
+    config = mil_config(
+        model='attention_mil',
+        lr=1e-4,
         batch_size=32,
-        epochs=[3]
+        epochs=10,
+        fit_one_cycle=True
     )
-
-    project.train(
-        'category',
-        params=hp,
-        val_k_fold=5,
-        filters={
-            'dataset': ['train'],
-            'category': ['MF', 'BID']
-        }
-    )
-
-    project.train(
-        'category',
-        params=hp,
-        val_strategy='none',
-        filters={
-            'dataset': ['train'],
-            'category': ['MF', 'BID']
-        }
+    train_mil(
+        config, 
+        train_dataset=train, 
+        val_dataset=val,
+        outcomes='category', 
+        outdir='project/mil_outcomes', 
+        bags='project/bags'
     )
 
 
